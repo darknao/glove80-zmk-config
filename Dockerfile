@@ -23,21 +23,8 @@ RUN <<EOF
     done
 EOF
 
-COPY --chmod=755 <<EOF /bin/entrypoint.sh
-#!/usr/bin/env bash
-    set -euo pipefail
-    : "\${BRANCH:=main}"
+COPY --chmod=755 entrypoint.sh /bin/entrypoint.sh
 
-    echo "Checking out \$BRANCH from moergo-sc/zmk" >&2
-    cd /src
-    git fetch origin
-    git checkout -q --detach "\$BRANCH"
-
-    echo 'Building Glove80 firmware' >&2
-    cd /config
-    nix-build ./config --arg firmware 'import /src/default.nix {}' -j2 -o /tmp/combined --show-trace
-    install -o "\$UID" -g "\$GID" /tmp/combined/glove80.uf2 ./glove80.uf2
-EOF
 
 ENTRYPOINT ["/bin/entrypoint.sh"]
 
