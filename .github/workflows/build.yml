@@ -11,8 +11,8 @@ jobs:
           submodules: recursive
       - uses: actions/checkout@v4
         with:
-          repository: moergo-sc/zmk
-          ref: main
+          repository: darknao/zmk
+          ref: darknao/rgb-dts
           path: src
       - uses: cachix/install-nix-action@v25
         with:
