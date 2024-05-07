@@ -19,6 +19,7 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/rgb.h>
+#include <dt-bindings/zmk/rgb_colors.h>
 
 /* Automatically generated layer name #define */
 #define LAYER_Base 0
@@ -35,6 +36,47 @@
 
 /* Custom Device-tree */
 
+/ {
+    underglow-layer {
+        compatible  = "zmk,underglow-layer";
+
+        lower {
+            bindings = <
+                ______ ______ ______ ______ ______                                                          ______ ______ ______ ______ ______
+                PURPLE   PINK   PINK   PINK   PINK   PINK                                            ______   GOLD ORANGE ORANGE ORANGE    RED
+                PURPLE ______ ______ ORANGE ______ ______                                            ______ YELLOW YELLOW YELLOW ORANGE ______
+                PURPLE ______ ORANGE    RED ORANGE ______                                            ______ YELLOW YELLOW YELLOW ORANGE ______
+                  BLUE ______    RED    RED    RED ______ ______ ______ ______  ______ ______ ______ ______ YELLOW YELLOW YELLOW    RED   BLUE
+                ______ ______ ORANGE ORANGE ORANGE        ______  GREEN ______  ______ ______ ______        YELLOW YELLOW YELLOW    RED ______
+                >;
+            layer-id = <LAYER_Lower>;
+        };
+        raise {
+            bindings = <
+                ______ ______ ______ ______ ______                                                          ______ ______ ______ ______ ______
+                ______ ______ ______ ______ ______ ______                                              PINK   PINK   PINK   PINK   PINK ______
+                ______   BLUE ______   BLUE   BLUE   BLUE                                            ______ ______ ______ ______ ______   BLUE
+                ______   BLUE ______ ______ ______   BLUE                                            ______ ______ ______ ______ ______ ______
+                  BLUE ______ ______ ______ ______ ______ ______ ______ ______  ______ ______ ______ ______ ______ ______ ______ ______   BLUE
+                ______ ______ ______ ______ ______        ______ ______ ______  ______  GREEN ______        ______ ______ ______ ______ ______
+                >;
+            layer-id = <LAYER_Raise>;
+        };
+        gaming {
+            bindings = <
+                ______ ______ ______ ______ ______                                                          ______ ______ ______ ______ ______
+                ______ ______ ______ ______ ______ ______                                            ______ ______ ______ ______ ______ ______
+                ______ ______ ______ ______ ______ ______                                            ______ ______ ______ ______ ______ ______
+                ______   TEAL ______    RED ______ ______                                            ______ ______ ______ ______ ______ ______
+                ______   BLUE    RED    RED    RED ______ ORANGE   BLUE ______  ______ ______ ______ ______ ______ ______ ______ ______ ______
+                ______   BLUE ______ ______ ______           RED ______ ______  ______  GREEN ______        ______ ______ ______ ______ ______
+                >;
+            layer-id = <LAYER_Gaming>;
+        };
+
+
+    };
+};
 
 
 /* Glove80 system behavior & macros */
