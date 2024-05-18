@@ -1,29 +1,52 @@
 # MoErgo Glove80 Custom Configuration for ZMK
 
-![MoErgo Logo](moergo_logo.png)
+This configuration uses a [custom ZMK firmware](https://github.com/darknao/zmk/tree/darknao/rgb-dts) that includes per layer / per key RGB underglow, based on @valdur [mod](https://github.com/moergo-sc/zmk/compare/main...valdur:zmk-glove80:valdur-stuff).
 
-This repo is the official ZMK configuration of the MoErgo Glove80 wireless split contoured keyboard. Use it to develop your own keymap and easily build your own ZMK firmware to run on your Glove80.
 
-**NOTE: You can also customize the layout of your Glove80 keyboard with the Glove80 Layout Editor webapp. For most users Glove80 Layout Editor is the recommended and simpler option. More information is available at the official MoErgo Glove80 Support site (see resources below).**
+## RGB Underglow Configuration
 
-These steps will get you using your keymap on your keyboard in the fastest time possible. It uses the GitHub Actions feature to build your firmware online.
+Add the following snippet to your keymap or in the "Custom Device-tree" field in the Glove80 Layout Editor:
+```
+/ {
+    underglow-layer {
+        compatible  = "zmk,underglow-layer";
 
-If you are looking to dig deeper into ZMK and develop new functionality, it is recommended to follow the steps of installing ZMK as found on the official ZMK documentation site (linked below).
+        lower {
+            bindings = <
+                ______ ______ ______ ______ ______                                                          ______ ______ ______ ______ ______
+                PURPLE   PINK   PINK   PINK   PINK   PINK                                            ______   GOLD ORANGE ORANGE ORANGE    RED
+                PURPLE ______ ______ ORANGE ______ ______                                            ______ YELLOW YELLOW YELLOW ORANGE ______
+                PURPLE ______ ORANGE    RED ORANGE ______                                            ______ YELLOW YELLOW YELLOW ORANGE ______
+                  BLUE ______    RED    RED    RED ______ ______ ______ ______  ______ ______ ______ ______ YELLOW YELLOW YELLOW    RED   BLUE
+                ______ ______ ORANGE ORANGE ORANGE        ______  GREEN ______  ______ ______ ______        YELLOW YELLOW YELLOW    RED ______
+                >;
+            layer-id = <LAYER_Lower>;
+        };
+        another-layer {
+            bindings = < [...] >;
+            layer-id = <LAYER_Name>;
+        };
+    };
+};
+```
+See the [keymap](config/glove80.keymap#L37) in this repository for a complete example.
+This keymap is also available on the [Glove80 Layout Editor](https://my.glove80.com/#/layout/user/98218d07-c187-4a97-b020-f5df021abe73). 
 
-## Resources
-- The [official MoErgo Glove80 Support](https://moergo.com/glove80-support) web site. Glove80 documentation and other technical resources.
-- The [official MoErgo Discord Server](https://moergo.com/discord). Instant conversations with other Glove80 users.
+__bindings__: This is a visual representation of the RGB underglow layer. `______` means the RGB is off. You can use [predefined color name](https://github.com/darknao/zmk/blob/darknao/rgb-dts/app/include/dt-bindings/zmk/rgb_colors.h) or RGB hex code like `0xFF0000` for red.
 
-- The [official ZMK Documentation](https://zmk.dev/docs) web site. Find the answers to many of your questions about ZMK Firmware.
-- The [official ZMK Discord Server](https://discord.gg/8cfMkQksSB). Instant conversations with other ZMK developers and users. Great technical resource!
+__layer-id__: This must match the associated layer identifier. You can use the [automatically generated #define name](https://docs.moergo.com/layout-editor-guide/advanced-usage-custom-defined-behaviors/#reference-to-layers), like `LAYER_Base` or `LAYER_Lower`.
 
-- The [official Glove80 ZMK Distribution](https://github.com/moergo-sc/zmk). Repositiory for ZMK firmware customized for Glove80. 
- 
-## Instructions
+If you use your keyboard wirelessly, setting the underglow on your base layer will eat your battery like crazy.  
+I recommend leaving `CONFIG_ZMK_RGB_UNDERGLOW_AUTO_OFF_IDLE` enabled in your [glove80.conf](config/glove80.conf) to turn off the underglow when the keyboard is idle and save some battery life.
+
+## Build Instructions
 1. Log into, or sign up for, your personal GitHub account.
 2. Create your own repository using this repository as a template ([instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)) and check it out on your local computer.
-3. Edit the keymap file(s) to suit your needs
-4. Commit and push your changes to your personal repo. Upon pushing it, GitHub Actions will start building a new version of your firmware with the updated keymap.
+3. If you use the official MoErgo configuration repository, make sure the [build configuration](.github/workflows/build.yml#L12) uses the correct repository/ref (`darknao/zmk` and `darknao/rgb-dts`).
+4. Edit the keymap file(s) to suit your needs.
+Alternatively, you can use the Glove80 Layout Editor to edit your layout, then copy the ZMK keymap in [your local repository](config/glove80.keymap).  
+⚠️ **You can't build the firmware from the Layout Editor**. You must use GitHub Actions from this repository to build it.
+5. Commit and push your changes to your personal repo. Upon pushing it, GitHub Actions will start building a new version of your firmware with the updated keymap.
 
 ## Firmware Files
 To locate your firmware files and reflash your Glove80...
@@ -35,3 +58,10 @@ To locate your firmware files and reflash your Glove80...
 6. Flash the firmware to Glove80 according to the user documentation on the official Glove80 Glove80 Support website (linked above)
 
 Your keyboard is now ready to use.
+
+## Enabling RGB Underglow Layer Effect
+Turn on the RGB underglow with the `RGB_TOG` key (Magic+T on the default layout).
+Use the `RGB_EFF` key (Magic+G on the default layout) to cycle through all effects until the layer effect is enabled.
+The layer effect is located after the swirl effect, and before the static color effect (the swirl effect will froze when the layer effect is enabled).
+
+You can use the `RGB_BRI` and `RGB_BRD` to increase/decrease the underglow brightness.
